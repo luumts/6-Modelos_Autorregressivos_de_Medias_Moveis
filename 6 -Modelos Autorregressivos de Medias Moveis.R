@@ -1,6 +1,6 @@
 #Aula 6 - Modelos ARMA
 
-#Instalando os pacotes necess·rios -Instalar somente caso n„o tenha instalado anteriormente
+#Instalando os pacotes necess√°rios -Instalar somente caso n√£o tenha instalado anteriormente
 install.packages("readxl")     #Instala o pacote Readxl
 install.packages("ggplot2")
 
@@ -16,26 +16,46 @@ IPCA <- read_excel("c:/Econometria/IPCA.xls")
 IPCA <- IPCA[,-1]                                     #Executar apenas uma vez
 Inflacao <- ts(IPCA$IPCA, start = 2008-01, frequency = 12)
 View(Inflacao)
-autoplot(Inflacao, main="Õndie de PreÁos ao Consumidor Amplo")      #Novo comnando de criar gr·fico, inerente ao pacote ggplo2
-Resumo_EstatÌstico <- summary(Inflacao)
-Resumo_EstatÌstico
+autoplot(Inflacao, main="√çndie de Pre√ßos ao Consumidor Amplo")      #Novo comnando de criar gr√°fico, inerente ao pacote ggplo2
+Resumo_Estat√≠stico <- summary(Inflacao)
+Resumo_Estat√≠stico
 
 acf(IPCA)
 pacf(IPCA)
 
-AR1 <- arima(Inflacao, order = c(1,0,0))  #Gera a regress„o autoregressiva de ordem um, nomeada aqui de AR1    
-AR1                                       #Exibe os resultados da Regress„o
+AR1 <- arima(Inflacao, order = c(1,0,0))  #Gera a regress√£o autoregressiva de ordem um, nomeada aqui de AR1    
+AR1                                       #Exibe os resultados da Regress√£o
+
+MA1 <- arima(Inflacao,order=c(0,0,1))
+MA1
+
+MA2 <- arima(Inflacao,order=c(0,0,2))
+MA2
 
 MA3 <- arima(Inflacao,order=c(0,0,3))
 MA3
 
+ARMA11 <- arima(Inflacao,order = c(1,0,1))
+ARMA11
+
+ARMA12 <- arima(Inflacao,order = c(1,0,2))
+ARMA12
+
 ARMA13 <- arima(Inflacao,order = c(1,0,3))
 ARMA13
 
-Box.test(ARMA13$residuals,lag = 3, type = "Ljung")    #Teste de Ljung-Box para autocrrelaÁ„o de erros
+Box.test(ARMA11$residuals,lag = 3, type = "Ljung")    #Teste de Ljung-Box para autocrrela√ß√£o de erros
+Box.test(ARMA12$residuals,lag = 3, type = "Ljung")
+Box.test(ARMA13$residuals,lag = 3, type = "Ljung")
+
+TesteJB11 <- Box.test(ARMA11$residuals,lag = 3, type = "Ljung")
+TesteJB11
+
+TesteJB12 <- Box.test(ARMA12$residuals,lag = 3, type = "Ljung")
+TesteJB12
 
 TesteJB13 <- Box.test(ARMA13$residuals,lag = 3, type = "Ljung")
-TesteJB
+TesteJB13
 
 MA1 <- arima(Inflacao,order = c(0,0,1))
 MA2 <- arima(Inflacao,order = c(0,0,2))
@@ -51,4 +71,3 @@ P_Valores <- c(TesteJB1$p.value,TesteJB2$p.value,TesteJB3$p.value)   #Cria um ve
 Modelos <- c("MA1","MA2","MA3")                                      #Cria um vetor(uma coluna de dados) com os nomes dos modelos
 Resultados <- data.frame(Modelos,P_Valores)
 View(Resultados)
-
